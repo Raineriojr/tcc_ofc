@@ -1,0 +1,14 @@
+version: '3.1'
+services: 
+  live-reload:
+    image: tccapi
+    build: .
+    environment:
+      PORT: 3001
+    volumes:
+      - .:/tccapi
+      - node_modules:/tccapi/node_modules
+    ports:
+      - 3001:3001
+volumes:
+  node_modules: {}

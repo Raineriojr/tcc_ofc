@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+
+<body>
+	<video id="video" width="500" height="500" autoplay muted controls></video>
+
+	<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+	<!-- <audio id="audio" preload="none" src="http://localhost:3001/stream" controls autoplay></audio> -->
+	<!-- <script>
+    //prevent cache
+    window.onload = () => {
+      document.getElementById('audio').src = './stream?id=' + Date.now()
+    }
+  </script> -->
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+		const video = document.getElementById('video');
+		const videoSrc = '/stream/index.m3u8';
+
+		if (Hls.isSupported()) {
+			const hls = new Hls();
+			hls.loadSource(videoSrc);
+			hls.attachMedia(video);
+			hls.on(Hls.Events.MANIFEST_PARSED, () => {
+				video.play();
+			});
+		} else if (video.canPlayType('application/x-mpegURL')) {
+			video.src = videoSrc + '?id=' + new Date();
+			video.addEventListener('loadedmetadata', () => {
+				video.play();
+			});
+		}
+	</script>
+</body>
+
+</html>
